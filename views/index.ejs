@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Authentication Basics</title>
+  </head>
+  <body>
+    <% if (user) { %>
+      <h1>Welcome back, <%= user.username %></h1>
+      <a href="/log-out">Log Out</a>
+      <form action="/messages/create" method="POST">
+        <label for="title">Title</label>
+        <input name="title" type="text" placeholder="Title" /><br/>
+        <label for="message">Message</label>
+        <textarea name="message" placeholder="What's on your mind?"></textarea><br>
+        <button>Send Message</button>
+      </form>
+      <% if (errors) { %>
+        <ul>
+          <% errors.forEach(err => { %>
+            <li><%= err.msg %></li>
+          <% }) %>
+        </ul>
+      <% } %>
+    <% } else { %>
+      <h1>Members Only</h1>
+      <form action="/log-in" method="POST">
+        <label for="username">Username</label>
+        <input name="username" placeholder="username" type="text" />
+        <label for="password">Password</label>
+        <input name="password" type="password" /><br/>
+        <button>Log In</button>
+      </form>
+      <a href="/users/sign-up">Sign Up</a>
+    <% } %>
+    <h3>Messages:</h3>
+    <ul>
+      <% if (messages) { %>
+        <% messages.forEach(msg => { %>
+          <li>
+            <% if (user) { %>
+              <p><strong>Username: </strong><%= msg.username %></p>
+            <% } else { %>
+              <p><strong>Username: </strong>LOGIN TO VIEW USER</p>
+            <% } %>
+            <p><strong>Title: </strong><%= msg.title %></p>
+            <p><strong>Message: </strong><%= msg.message %></p>
+        </li>
+        <% }) %>
+      <% } %>
+    </ul>
+  </body>
+</html>
